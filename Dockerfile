@@ -1,5 +1,5 @@
 FROM lucidfrontier45/pytorch
-
+FROM guyang3532/torchvision
 RUN mkdir /webapp
 WORKDIR /webapp
 
