@@ -1,24 +1,5 @@
-import io
-import json
-import os
-
-import torchvision.models as models
-import torchvision.transforms as transforms
+from flask import Flask, request, jsonify
 from PIL import Image
-from flask import Flask, jsonify, request, render_template
-
-
-app = Flask(__name__)
-model = models.densenet121(pretrained=True)               # ImageNet의 1000개 클래스를 학습
-model.eval()                                              # autograd를 끄고
-
-
-
-img_class_map = None
-mapping_file_path = 'index_to_name.json'                  # 사람이 읽을 수 있는 ImageNet 클래스 이름
-if os.path.isfile(mapping_file_path):
-    with open (mapping_file_path) as f:
-        img_class_map = json.load(f)
 
 
 
@@ -54,27 +35,30 @@ def render_prediction(prediction_idx):
     return prediction_idx, class_name
 
 
-@app.route('/', methods=['GET'])
-def root():
-    return render_template('index.html')
-    # return jsonify({'msg' : 'Try POSTing to the /predict endpoint with an RGB image attachment'})
 
 
-# @app.route('/predict', methods=['POST'])
+def create_app(classifier):
+    app = Flask(__name__)
 
-@app.route('/', methods=['POST'])
-def predict():
-    if request.method == 'POST':
-        file = request.files['imagefile']
-        if file is not None:
-            image_path = file.filename
+    
+    @app.route('/', methods=['GET'])
+    def root():
+        return render_template('index.html')
 
-            input_tensor = transform_image(file)
-            prediction_idx = get_prediction(input_tensor)
-            class_id, class_name = render_prediction(prediction_idx)
-            class22 = "Class id : {0} , Class_name {1}".format(class_id, class_name)
-            # return jsonify({'class_id': class_id, 'class_name': class_name})
-            return render_template('index.html', prediction =  class22, image_path = image_path )
+    @app.route('/', methods=['POST'])
+    def predict():
+        if request.method == 'POST':
+            file = request.files['imagefile']
+            if file is not None:
+                image_path = file.filename
 
-if __name__ == '__main__':
-    app.run()
+                input_tensor = transform_image(file)
+                prediction_idx = get_prediction(input_tensor)
+                class_id, class_name = render_prediction(prediction_idx)
+                class22 = "Class id : {0} , Class_name {1}".format(class_id, class_name)
+                # return jsonify({'class_id': class_id, 'class_name': class_name})
+                return render_template('index.html', prediction =  class22, image_path = image_path )
+
+        
+
+    return app.run()
