@@ -81,7 +81,7 @@ def predict():
 
 
 
-app = app.run(port=5001 )
+app = app.run(host='0.0.0.0', port=5001 )
 
 
 
