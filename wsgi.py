@@ -76,12 +76,12 @@ def predict():
             # return jsonify({'class_id': class_id, 'class_name': class_name})
             return render_template('index.html', prediction =  class22, image_path = image_path )
 
-if __name__ == '__main__':
-    app.run()
+# if __name__ == '__main__':
+#     app.run()
 
 
 
-app = app.run()
+app = app.run(host='0.0.0.0', port=5001 )
 
 
 
