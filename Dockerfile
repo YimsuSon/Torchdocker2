@@ -4,7 +4,7 @@ RUN mkdir /webapp
 WORKDIR /webapp
 
 COPY requirements.txt /webapp
-COPY index_to_name /webapp
+COPY index_to_name.json /webapp
 RUN pip install --no-cache-dir -r requirements.txt
 
 
