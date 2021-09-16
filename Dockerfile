@@ -7,7 +7,7 @@ COPY requirements.txt /webapp
 COPY index_to_name /webapp
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app /webapp/app
+
 COPY serve /webapp/serve
 COPY templates /webapp/templates
 
